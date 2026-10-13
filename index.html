@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#062d22">
+<title>Dubai Earn — Watch • Play • Refer</title>
+<style>
+:root{--bg:#061b16;--panel:#0b2b21;--green:#08a66b;--mint:#39e6ae;--gold:#ffd35b;--text:#f5fff9;--muted:#a8c8bb;--line:#1e4b3b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top right,#124b37 0,#061b16 45%,#04120f 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{padding:22px 16px 16px;max-width:1050px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px}.logo{width:43px;height:43px;border:2px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:20px;background:#073b2b}
+.pill{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--mint);font-size:12px}
+main{max-width:1050px;margin:auto;padding:10px 16px 42px}.hero{padding:24px 0 20px;display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center}
+h1{font-size:clamp(34px,7vw,58px);line-height:1.03;margin:8px 0 14px;letter-spacing:-1.5px}.gold{color:var(--gold)}p{color:var(--muted);line-height:1.6}.hero-card,.card{background:linear-gradient(145deg,rgba(13,56,42,.94),rgba(6,30,23,.96));border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 12px 35px #0002}
+.hero-card{text-align:center}.coin{font-size:62px}.hero-card strong{display:block;font-size:24px}.hero-card small{color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--green);color:white}.btn.secondary{background:#123e30;border:1px solid #28674f}.btn.goldbtn{background:var(--gold);color:#18251e}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.card h2,.card h3{margin:5px 0 8px}.icon{font-size:28px}.muted{color:var(--muted);font-size:14px}.balance{font-size:31px;font-weight:900;color:var(--mint);margin:8px 0}
+.task{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task b{display:block}.reward{color:var(--gold);font-weight:800;white-space:nowrap}
+input,select{width:100%;background:#041b14;color:var(--text);border:1px solid #2b624d;border-radius:10px;padding:12px;margin:6px 0 12px;font:inherit}
+label{font-size:13px;color:var(--muted)}.notice{border:1px solid #725d23;background:#332b12;color:#ffe8a1;border-radius:14px;padding:13px;font-size:13px;line-height:1.5;margin-top:18px}
+footer{text-align:center;color:#709789;font-size:12px;padding:22px 10px}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:5;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.modalbox{max-width:430px;width:100%;background:#09281e;border:1px solid var(--line);border-radius:20px;padding:22px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#f5fff9;color:#06251b;padding:12px 16px;border-radius:12px;display:none;z-index:8;box-shadow:0 5px 20px #0006;max-width:90vw}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero-card{display:none}.grid{grid-template-columns:1fr}.grid .card{padding:17px}header{padding-top:16px}.hero{padding-top:18px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">د</div><span>Dubai <span class="gold">Earn</span></span></div><div class="pill">🇦🇪 UAE + 🇮🇳 India · INR (₹)</div></header>
+<main>
+<section class="hero">
+<div><div class="pill">WATCH · PLAY · REFER · EARN</div><h1>Your time.<br><span class="gold">Your rewards.</span></h1><p>A rewards-platform prototype for users in the UAE and India. Explore tasks, track demo points and preview a referral wallet.</p><div class="actions"><button class="btn goldbtn" onclick="openModal('signup')">Get Started</button><button class="btn secondary" onclick="openModal('login')">Log In</button></div></div>
+<div class="hero-card"><div class="coin">💰</div><strong>Earn points</strong><p>Complete eligible tasks and see your demo balance update.</p><small>Prototype mode · No real payouts yet</small></div>
+</section>
+<section class="grid">
+<div class="card"><div class="icon">💳</div><h2>My Wallet</h2><div class="balance" id="balance">₹0.00</div><div class="muted">Demo reward balance</div><div class="actions"><button class="btn" onclick="openModal('withdraw')">Request Withdrawal</button></div></div>
+<div class="card"><div class="icon">🎁</div><h2>Daily Bonus</h2><p class="muted">Claim a demo bonus once per day.</p><div class="task"><span>Daily check-in</span><span class="reward">+₹1 demo</span></div><button class="btn" id="dailyBtn" onclick="dailyBonus()">Claim Bonus</button></div>
+<div class="card"><div class="icon">👥</div><h2>Refer & Earn</h2><p class="muted">Invite friends using your demo referral code.</p><input id="refcode" value="DUBAI-DEMO" readonly><button class="btn secondary" onclick="copyCode()">Copy Referral Code</button></div>
+</section>
+<section class="grid">
+<div class="card"><div class="icon">🎬</div><h2>Watch & Earn</h2><p class="muted">Demo tasks only. Rewards are simulated.</p><div class="task"><div><b>Watch sponsor introduction</b><span class="muted">Preview task · 30 sec</span></div><span class="reward">+₹0.50</span></div><button class="btn" onclick="demoTask(.5,'Video task')">Try Demo Task</button></div>
+<div class="card"><div class="icon">🎮</div><h2>Play & Earn</h2><p class="muted">Game offers can be added after sponsor approval.</p><div class="task"><div><b>Complete a sample game task</b><span class="muted">Preview task</span></div><span class="reward">+₹1.00</span></div><button class="btn" onclick="demoTask(1,'Game task')">Try Demo Task</button></div>
+<div class="card"><div class="icon">🛡️</div><h2>Safe & Clear</h2><p class="muted">We won't ask for your bank password, OTP or payment to unlock rewards.</p><div class="task"><span>Supported regions</span><b>UAE + India</b></div><div class="task"><span>Display currency</span><b>Indian Rupees (₹)</b></div></div>
+</section>
+<div class="notice"><b>Important:</b> This is a front-end prototype, not a live earning service. Demo points have no cash value and cannot be paid out. Real rewards require a funded business model, verified advertising/offer partners, fraud controls, privacy terms, payout-provider approval, and compliance with laws in each country. Do not advertise guaranteed earnings.</div>
+</main>
+<footer>Dubai Earn · Prototype v1 · Demo balances are stored only in this browser on this device.</footer>
+<div class="modal" id="modal"><div class="modalbox"><button class="btn secondary" style="float:right" onclick="closeModal()">Close</button><div id="modalContent"></div></div></div><div class="toast" id="toast"></div>
+<script>
+let balance=Number(localStorage.getItem('de_demo_balance')||0);
+let daily=localStorage.getItem('de_daily_date')||'';
+function render(){document.getElementById('balance').textContent='₹'+balance.toFixed(2);document.getElementById('dailyBtn').disabled=daily===new Date().toISOString().slice(0,10);document.getElementById('dailyBtn').textContent=daily===new Date().toISOString().slice(0,10)?'Claimed Today':'Claim Bonus'}
+function add(amount){balance+=amount;localStorage.setItem('de_demo_balance',balance.toFixed(2));render()}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2600)}
+function dailyBonus(){if(daily===new Date().toISOString().slice(0,10))return toast('You already claimed today’s demo bonus.');daily=new Date().toISOString().slice(0,10);localStorage.setItem('de_daily_date',daily);add(1);toast('Demo bonus added. This is not real money.')}
+function demoTask(amount,name){add(amount);toast(name+' completed: demo points added (no cash value).')}
+function copyCode(){let i=document.getElementById('refcode');i.select();i.setSelectionRange(0,99);if(navigator.clipboard){navigator.clipboard.writeText(i.value).then(()=>toast('Referral code copied!')).catch(()=>toast('Your code is DUBAI-DEMO'));}else toast('Your code is DUBAI-DEMO')}
+function openModal(type){let c=document.getElementById('modalContent');if(type==='signup')c.innerHTML='<h2>Create demo account</h2><p class="muted">This prototype does not create a real account.</p><label>Display name</label><input placeholder="Your name"><label>Country</label><select><option>United Arab Emirates</option><option>India</option></select><label>Email (optional demo only)</label><input type="email" placeholder="you@example.com"><button class="btn" onclick="closeModal();toast(\\'Demo preview only — account service not connected.\\')">Continue Demo</button>';if(type==='login')c.innerHTML='<h2>Log in</h2><p class="muted">Login is not connected in this prototype.</p><label>Email</label><input type="email" placeholder="you@example.com"><button class="btn" onclick="closeModal();toast(\\'Login will be added with a secure backend.\\')">Continue</button>';if(type==='withdraw')c.innerHTML='<h2>Withdrawal preview</h2><p class="muted">Real withdrawals are not enabled. Demo balance: ₹'+balance.toFixed(2)+'</p><label>Preferred payout method</label><select><option>UPI (India, subject to provider approval)</option><option>Bank transfer</option><option>Other approved payout method</option></select><label>Amount (₹)</label><input type="number" min="1" placeholder="Enter amount"><button class="btn" onclick="closeModal();toast(\\'Withdrawals are disabled until real payout setup is complete.\\')">Preview Request</button>';document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+render();
+</script>
+</body></html>
